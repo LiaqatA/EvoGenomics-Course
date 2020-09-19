@@ -1,0 +1,22 @@
+---
+title: "index.Rmd"
+author: "Liaqat Ali"
+date: "9/14/2020"
+output: html_document
+bibliography: [data/references.bib]
+Site: EvoGenomics-Course (https://liaqata.github.io/EvoGenomics-Course/)
+Description: This contains html files for the course repository for Evolutionarey Genomics and Bioinformatics
+---
+
+---{r}
+## Labs 
+   
+   1. (Lab_1.Liaqat.Html) [Introduction to R and Reproducible Research]
+   2. (This is my Lab-2)  [git,GitHub and Rstudio projects]
+   3. (Lab-3A & 3B) [Data Wrangling]
+
+
+
+
+
+---
