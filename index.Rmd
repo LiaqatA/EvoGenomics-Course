@@ -11,16 +11,16 @@ Description: This contains html files for the course repository for Evolutionare
 ## Labs 
 This is my web site!
 
-  [This is my Lab-1](Lab1_Liaqat.html)
-  [This is my Lab-2](Lab-1-HTML.html)
-  [Lab-3A](Lab-3A.html)
-  [Lab-3B](Lab-3B.html)
+  [This is my Lab-1]  (Lab1_Liaqat.html)
+  [This is my Lab-2]  (Lab-1-HTML.html)
+  [Lab-3A]            (Lab-3A.html)
+  [Lab-3B]            (Lab-3B.html)
    
    
 
 [@RCoreTeam]
 [@Chang2015]
-[@Hopkins2020]
+
 
 
 
