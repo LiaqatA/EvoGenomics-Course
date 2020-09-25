@@ -1,7 +1,7 @@
 ---
-title: "Untitled"
+title: "Lab-4"
 author: "Liaqat Ali"
-date: "9/23/2020"
+date: "9/17/2020"
 output: html_document
 ---
 
@@ -26,19 +26,6 @@ head(reports_03_11_2020)
 ```{r}
 str(reports_03_11_2020)
 ```
-
-
-
-```{r}
-reports_03_11_2020 %>% 
-  filter (Country.Region == "China") %>% 
-  ggplot(aes(x = Confirmed,  y = reorder(Province.State, Confirmed))) + 
-    geom_point() +
-    ggtitle("Confirmed cases for each State in China") +
-    ylab("Country/Region") +
-    xlab("Confirmed Cases")
-```
-
 
 
 ```{r}

@@ -11,15 +11,33 @@ Description: This contains html files for the course repository for Evolutionare
 ## Labs 
 This is my web site!
 
-  [This is my Lab-1]  (Lab1_Liaqat.html)
-  [This is my Lab-2]  (Lab-1-HTML.html)
-  [Lab-3A]            (Lab-3A.html)
-  [Lab-3B]            (Lab-3B.html)
+  [This is my Lab-1](Lab_1.html) : Introduction to R and Reproducible Research
+  
+  [This is my Lab-2](Lab_2.html) : git, GitHub and Rstudio projects
+  
+  [Lab-3A](Lab-3A.Liaqat.html)   :Data Wrangling
+                                 
+  [Lab-3B](Lab-3B.html)
+  
+  [Lab-4](Lab_4.html)           :Data Wrangling and graphing Covid-19 reporting                                  data (Part 1)
+  
+  
+ 
+ 
+ 
+ 
+  [References]
+  []
+  
+  
+  
+  
+  
    
    
 
-[@RCoreTeam]
-[@Chang2015]
+[]
+[]
 
 
 
