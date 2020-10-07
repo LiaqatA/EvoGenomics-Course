@@ -21,6 +21,10 @@ This is my web site!
   
   [Lab-4](Lab_4.html)           :Data Wrangling and graphing Covid-19 reporting                                  data (Part 1)
   
+  [Lab_5]()                     :   (Part 2)         
+  
+  [Lab_6](Lab_6.html)           : Data Maps and Interactive Graphs from the                                         Covid-19 reporting data
+  
   
  
  
