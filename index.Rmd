@@ -25,6 +25,8 @@ This is my web site!
   
   [Lab_6](Lab_6.html)           : Data Maps and Interactive Graphs from the                                         Covid-19 reporting data
   
+  [Lab_7](Lab_7.html)           : RNA-Seq workflow: gene-level exploratory                                           analysis and differential expression
+  
   
  
  
