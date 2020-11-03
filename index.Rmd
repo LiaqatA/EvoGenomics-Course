@@ -19,14 +19,17 @@ This is my web site!
                                  
   [Lab-3B](Lab-3B.html)
   
-  [Lab-4](Lab_4.html)           :Data Wrangling and graphing Covid-19 reporting                                  data (Part 1)
+  [Lab-4](Lab_4.html)           :Data Wrangling and graphing Covid-19 reporting data (Part 1)
   
   [Lab_5]()                     :   (Part 2)         
   
-  [Lab_6](Lab_6.html)           : Data Maps and Interactive Graphs from the                                         Covid-19 reporting data
+  [Lab_6](Lab_6.html)           : Data Maps and Interactive Graphs from the Covid-19 reporting data
   
-  [Lab_7](Lab_7.html)           : RNA-Seq workflow: gene-level exploratory                                           analysis and differential expression
+  [Lab_7](Lab_7.html)           : RNA-Seq workflow: gene-level exploratoryanalysis and differential expression
   
+  [Lab_8]()
+  
+  [Lab_9](Lab_9.html)
   
  
  
