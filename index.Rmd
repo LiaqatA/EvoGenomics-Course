@@ -27,11 +27,13 @@ This is my web site!
   
   [Lab_7](Lab_7.html)           : RNA-Seq workflow: gene-level exploratoryanalysis and differential expression
   
-  [Lab_8]()
+  [Lab_8]()                     Sequence Alignment, Phylogenetic Analysis and Tree Visualization
   
   [Lab_9](Lab_9.html)           : Programming in R- Regular Expressions
   
   [Lab_9A](Lab_9x.html)         : Programming in R-Control Structures and Functions
+  
+  [ Lab_10](Lab_10.html)        : Pupulation genomics based on high throughput sequencing (HTS)
   
   
  
