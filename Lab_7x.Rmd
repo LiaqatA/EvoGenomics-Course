@@ -1,0 +1,484 @@
+---
+title: "Lab_7"
+output: html_document
+---
+
+```{r}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install(version = "3.11")
+```
+```{r}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("rnaseqGene")
+
+
+BiocManager::install("airway")
+BiocManager::install("tximeta")
+BiocManager::install("DESeq2")
+BiocManager::install("Gviz")
+BiocManager::install("sva")
+BiocManager::install("RUVSeq")
+BiocManager::install("fission")
+```
+
+```{r}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("rnaseqGene")
+```
+
+```{r}
+browseVignettes("rnaseqGene")
+```
+
+```{r}
+library("airway")
+```
+
+```{r}
+dir <- system.file("extdata", package="airway", mustWork=TRUE)
+```
+
+```{r}
+list.files(dir)
+
+```
+
+```{r}
+list.files(file.path(dir, "quants"))
+```
+
+```{r}
+csvfile <- file.path(dir, "sample_table.csv")
+coldata <- read.csv(csvfile, row.names=1, stringsAsFactors=FALSE)
+coldata
+
+
+```
+
+```{r}
+coldata <- coldata[1:2,]
+coldata$names <- coldata$Run
+coldata$files <- file.path(dir, "quants", coldata$names, "quant.sf.gz")
+file.exists(coldata$files)
+
+```
+
+```{r}
+library("tximeta")
+se <- tximeta(coldata)
+## importing quantifications
+## reading in files with read_tsv
+## 1 2 
+## found matching transcriptome:
+## [ GENCODE - Homo sapiens - release 29 ]
+## useHub=TRUE: checking for TxDb via 'AnnotationHub'
+## using temporary cache /tmp/RtmpE5fMSc/BiocFileCache
+## snapshotDate(): 2020-10-26
+## found matching TxDb via 'AnnotationHub'
+## downloading 1 resources
+## retrieving 1 resource
+## loading from cache
+## Loading required package: GenomicFeatures
+## Loading required package: AnnotationDbi
+## generating transcript ranges
+
+
+```
+
+
+```{r}
+
+dim(se)
+## [1] 205870      2
+head(rownames(se))
+
+```
+
+```{r}
+gse <- summarizeToGene(se)
+## loading existing TxDb created: 2020-10-30 19:30:40
+## obtaining transcript-to-gene mapping from database
+## generating gene ranges
+## summarizing abundance
+## summarizing counts
+## summarizing length
+
+```
+
+```{r}
+dim(gse)
+## [1] 58294     2
+head(rownames(gse))
+
+
+```
+
+```{r}
+data(gse)
+gse
+## class: RangedSummarizedExperiment 
+## dim: 58294 8 
+## metadata(6): tximetaInfo quantInfo ... txomeInfo txdbInfo
+## assays(3): counts abundance length
+## rownames(58294): ENSG00000000003.14 ENSG00000000005.5 ...
+##   ENSG00000285993.1 ENSG00000285994.1
+## rowData names(1): gene_id
+## colnames(8): SRR1039508 SRR1039509 ... SRR1039520 SRR1039521
+## colData names(3): names donor condition
+
+
+```
+
+```{r}
+assayNames(gse)
+## [1] "counts"    "abundance" "length"
+head(assay(gse), 3)
+```
+
+```{r}
+colSums(assay(gse))
+```
+
+
+```{r}
+rowRanges(gse)
+```
+
+```{r}
+seqinfo(rowRanges(gse))
+```
+
+```{r}
+colData(gse)
+```
+
+```{r}
+gse$donor
+```
+
+```{r}
+gse$condition
+```
+
+```{r}
+gse$cell <- gse$donor
+gse$dex <- gse$condition
+levels(gse$dex)
+```
+```{r}
+levels(gse$dex) <- c("untrt", "trt")
+```
+
+```{r}
+library("magrittr")
+gse$dex %<>% relevel("untrt")
+gse$dex
+```
+```{r}
+gse$dex <- relevel(gse$dex, "untrt")
+```
+
+```{r}
+round( colSums(assay(gse)) / 1e6, 1 )
+```
+
+```{r}
+library("DESeq2")
+dds <- DESeqDataSet(gse, design = ~ cell + dex)
+```
+
+```{r}
+countdata <- round(assays(gse)[["counts"]])
+head(countdata, 3)
+```
+
+```{r}
+coldata <- colData(gse)
+```
+
+```{r}
+ddsMat <- DESeqDataSetFromMatrix(countData = countdata,
+                                 colData = coldata,
+                                 design = ~ cell + dex)
+```
+```{r}
+nrow(dds)
+```
+```{r}
+keep <- rowSums(counts(dds)) > 1
+dds <- dds[keep,]
+nrow(dds)
+```
+```{r}
+# at least 3 samples with a count of 10 or higher
+keep <- rowSums(counts(dds) >= 10) >= 3
+```
+
+```{r}
+lambda <- 10^seq(from = -1, to = 2, length = 1000)
+cts <- matrix(rpois(1000*100, lambda), ncol = 100)
+library("vsn")
+meanSdPlot(cts, ranks = FALSE)
+```
+
+```{r}
+log.cts.one <- log2(cts + 1)
+meanSdPlot(log.cts.one, ranks = FALSE)
+```
+
+```{r}
+vsd <- vst(dds, blind = FALSE)
+head(assay(vsd), 3)
+```
+
+```{r}
+colData(vsd)
+```
+
+```{r}
+rld <- rlog(dds, blind = FALSE)
+head(assay(rld), 3)
+```
+
+```{r}
+library("dplyr")
+library("ggplot2")
+
+dds <- estimateSizeFactors(dds)
+
+df <- bind_rows(
+  as_data_frame(log2(counts(dds, normalized=TRUE)[, 1:2]+1)) %>%
+         mutate(transformation = "log2(x + 1)"),
+  as_data_frame(assay(vsd)[, 1:2]) %>% mutate(transformation = "vst"),
+  as_data_frame(assay(rld)[, 1:2]) %>% mutate(transformation = "rlog"))
+  
+colnames(df)[1:2] <- c("x", "y")  
+
+lvls <- c("log2(x + 1)", "vst", "rlog")
+df$transformation <- factor(df$transformation, levels=lvls)
+
+ggplot(df, aes(x = x, y = y)) + geom_hex(bins = 80) +
+  coord_fixed() + facet_grid( . ~ transformation) 
+```
+
+```{r}
+sampleDists <- dist(t(assay(vsd)))
+sampleDists
+```
+
+```{r}
+library("pheatmap")
+library("RColorBrewer")
+```
+
+```{r}
+sampleDistMatrix <- as.matrix( sampleDists )
+rownames(sampleDistMatrix) <- paste( vsd$dex, vsd$cell, sep = " - " )
+colnames(sampleDistMatrix) <- NULL
+colors <- colorRampPalette( rev(brewer.pal(9, "Blues")) )(255)
+pheatmap(sampleDistMatrix,
+         clustering_distance_rows = sampleDists,
+         clustering_distance_cols = sampleDists,
+         col = colors)
+```
+
+```{r}
+library("PoiClaClu")
+poisd <- PoissonDistance(t(counts(dds)))
+```
+
+```{r}
+samplePoisDistMatrix <- as.matrix( poisd$dd )
+rownames(samplePoisDistMatrix) <- paste( dds$dex, dds$cell, sep=" - " )
+colnames(samplePoisDistMatrix) <- NULL
+pheatmap(samplePoisDistMatrix,
+         clustering_distance_rows = poisd$dd,
+         clustering_distance_cols = poisd$dd,
+         col = colors)
+```
+
+```{r}
+plotPCA(vsd, intgroup = c("dex", "cell"))
+```
+
+```{r}
+pcaData <- plotPCA(vsd, intgroup = c( "dex", "cell"), returnData = TRUE)
+pcaData
+```
+
+```{r}
+dds <- DESeq(dds)
+```
+
+```{r}
+res <- results(dds)
+res
+```
+```{r}
+res <- results(dds, contrast=c("dex","trt","untrt"))
+mcols(res, use.names = TRUE)
+```
+
+```{r}
+summary(res)
+```
+
+```{r}
+res.05 <- results(dds, alpha = 0.05)
+table(res.05$padj < 0.05)
+```
+
+```{r}
+resLFC1 <- results(dds, lfcThreshold=1)
+table(resLFC1$padj < 0.1)
+```
+
+
+```{r}
+results(dds, contrast = c("cell", "N061011", "N61311"))
+```
+```{r}
+sum(res$pvalue < 0.05, na.rm=TRUE)
+```
+```{r}
+sum(!is.na(res$pvalue))
+```
+```{r}
+sum(res$padj < 0.1, na.rm=TRUE)
+```
+
+```{r}
+resSig <- subset(res, padj < 0.1)
+head(resSig[ order(resSig$log2FoldChange), ])
+```
+
+```{r}
+
+head(resSig[ order(resSig$log2FoldChange, decreasing = TRUE), ])
+```
+
+```{r}
+topGene <- rownames(res)[which.min(res$padj)]
+plotCounts(dds, gene = topGene, intgroup=c("dex"))
+```
+
+```{r}
+library("ggbeeswarm")
+geneCounts <- plotCounts(dds, gene = topGene, intgroup = c("dex","cell"),
+                         returnData = TRUE)
+ggplot(geneCounts, aes(x = dex, y = count, color = cell)) +
+  scale_y_log10() +  geom_beeswarm(cex = 3)
+```
+
+```{r}
+ggplot(geneCounts, aes(x = dex, y = count, color = cell, group = cell)) +
+  scale_y_log10() + geom_point(size = 3) + geom_line()
+```
+
+```{r}
+library("apeglm")
+resultsNames(dds)
+
+```
+
+```{r}
+res <- lfcShrink(dds, coef="dex_trt_vs_untrt", type="apeglm")
+plotMA(res, ylim = c(-5, 5))
+```
+
+```{r}
+res.noshr <- results(dds, name="dex_trt_vs_untrt")
+plotMA(res.noshr, ylim = c(-5, 5))
+```
+
+```{r}
+plotMA(res, ylim = c(-5,5))
+topGene <- rownames(res)[which.min(res$padj)]
+with(res[topGene, ], {
+  points(baseMean, log2FoldChange, col="dodgerblue", cex=2, lwd=2)
+  text(baseMean, log2FoldChange, topGene, pos=2, col="dodgerblue")
+})
+```
+
+```{r}
+hist(res$pvalue[res$baseMean > 1], breaks = 0:20/20,
+     col = "grey50", border = "white")
+```
+
+```{r}
+library("genefilter")
+topVarGenes <- head(order(rowVars(assay(vsd)), decreasing = TRUE), 20)
+```
+
+```{r}
+qs <- c(0, quantile(resLFC1$baseMean[resLFC1$baseMean > 0], 0:6/6))
+bins <- cut(resLFC1$baseMean, qs)
+levels(bins) <- paste0("~", round(signif((qs[-1] + qs[-length(qs)])/2, 2)))
+fractionSig <- tapply(resLFC1$pvalue, bins, function(p)
+                          mean(p < .05, na.rm = TRUE))
+barplot(fractionSig, xlab = "mean normalized count",
+                     ylab = "fraction of small p values")
+```
+
+```{r}
+library("AnnotationDbi")
+library("org.Hs.eg.db")
+```
+```{r}
+columns(org.Hs.eg.db)
+```
+
+```{r}
+ens.str <- substr(rownames(res), 1, 15)
+res$symbol <- mapIds(org.Hs.eg.db,
+                     keys=ens.str,
+                     column="SYMBOL",
+                     keytype="ENSEMBL",
+                     multiVals="first")
+res$entrez <- mapIds(org.Hs.eg.db,
+                     keys=ens.str,
+                     column="ENTREZID",
+                     keytype="ENSEMBL",
+                     multiVals="first")
+resOrdered <- res[order(res$pvalue),]
+head(resOrdered)
+```
+```{r}
+resOrderedDF <- as.data.frame(resOrdered)[1:100, ]
+write.csv(resOrderedDF, file = "results.csv")
+
+```
+
+
+
+```{r}
+library("RUVSeq")
+
+set <- newSeqExpressionSet(counts(dds))
+idx  <- rowSums(counts(set) > 5) >= 2
+set  <- set[idx, ]
+set <- betweenLaneNormalization(set, which="upper")
+not.sig <- rownames(res)[which(res$pvalue > .1)]
+empirical <- rownames(set)[ rownames(set) %in% not.sig ]
+set <- RUVg(set, empirical, k=2)
+pData(set)
+```
+
+
+```{r}
+par(mfrow = c(2, 1), mar = c(3,5,3,1))
+for (i in 1:2) {
+  stripchart(pData(set)[, i] ~ dds$cell, vertical = TRUE, main = paste0("W", i))
+  abline(h = 0)
+ }
+```
+
+```{r}
+sessionInfo()
+```
+

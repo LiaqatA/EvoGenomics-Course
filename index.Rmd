@@ -27,6 +27,8 @@ This is my web site!
   
   [Lab_7](Lab_7.html)           : RNA-Seq workflow: gene-level exploratoryanalysis and differential expression
   
+  [Lab_7x](Lab_7x.html)
+  
   [Lab_8]()                     Sequence Alignment, Phylogenetic Analysis and Tree Visualization
   
   [Lab_9](Lab_9.html)           : Programming in R- Regular Expressions
