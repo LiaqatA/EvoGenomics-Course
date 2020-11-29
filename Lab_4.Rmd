@@ -1,0 +1,197 @@
+---
+title: "Lab-4"
+author: "Liaqat Ali"
+date: "9/17/2020"
+output: html_document
+---
+
+```{r load-packages, include=FALSE}
+library(dplyr)
+library(magrittr)
+library(knitr)
+library(tidyverse)
+library(lubridate)
+```
+
+```{r}
+reports_03_11_2020 <-   read_csv(url("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-11-2020.csv")) %>%
+  rename(Country.Region = "Country/Region", Province.State = "Province/State")
+```
+
+```{r}
+head(reports_03_11_2020)
+```
+
+
+```{r}
+str(reports_03_11_2020)
+```
+
+
+```{r}
+reports_03_11_2020 %>% 
+  filter (Country.Region == "US") %>% 
+  ggplot(aes(x = Confirmed,  y = reorder(Province.State, Confirmed))) + 
+    geom_point() +
+    ggtitle("Confirmed cases for each State in US") +
+    ylab("Country/Region") +
+    xlab("Confirmed Cases")
+```
+
+```{r}
+reports_03_11_2020 %>% 
+  filter (Country.Region == "US") %>% 
+  ggplot(aes(x = Deaths,  y = reorder(Province.State, Deaths))) + 
+    geom_point() +
+    ggtitle("Death cases for each State in US") +
+    ylab("Country/Region") +
+    xlab("Confirmed Cases")
+```
+
+
+```{r }
+reports_03_11_2020 %>% 
+  group_by(Country.Region) %>% 
+  summarise(Deaths = sum(Deaths)) %>% 
+  arrange(desc(Deaths))
+```
+
+```{r}
+reports_03_11_2020 %>%
+  group_by(Country.Region) %>% 
+  summarise(Confirmed = sum(Confirmed)) %>% 
+  arrange(desc(Confirmed))
+```
+
+
+
+
+```{r}
+reports_03_11_2020 %>% 
+  group_by(Country.Region) %>% 
+  summarise(Confirmed = sum(Confirmed)) %>% 
+  arrange(desc(Confirmed)) %>% 
+  slice(1:10) %>% 
+  ggplot(aes(x = Confirmed,  y = reorder(Country.Region, Confirmed))) + 
+    geom_bar(stat = 'identity') +
+    ggtitle("Coronavirus: Top ten most-affected countries Covid-19 ") +
+    ylab("Country/Region") +
+    xlab("Confirmed")
+```
+
+```{r }
+reports_03_11_2020 %>% 
+  group_by(Country.Region) %>% 
+  summarise(Deaths = sum(Deaths)) %>% 
+  arrange(desc(Deaths)) %>% 
+  slice(1:10) %>% 
+  ggplot(aes(x = Deaths,  y = reorder(Country.Region, Deaths))) + 
+    geom_bar(stat = 'identity') +
+    ggtitle("The 10 countries with the most reported COV19-related deaths") +
+    ylab("Country/Region") +
+    xlab("Deaths")
+```
+
+
+
+## # Covid-19 reports 6 months later!
+
+
+
+```{r,creating graphs from reports}
+reports_09_11_2020 <-read_csv(url("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/09-11-2020.csv")) %>%
+   rename(Country.Region = Country_Region, Province.State = "Province_State")
+```
+  
+```{r}
+head(reports_09_11_2020)
+```
+
+
+```{r}
+str(reports_09_11_2020)
+```
+  
+
+```{r }
+reports_09_11_2020 %>% 
+  filter (Country.Region == "US") %>%
+  group_by(Province.State) %>% 
+  summarise(Confirmed = sum(Confirmed)) %>% 
+  arrange(desc(Confirmed))
+```
+
+
+```{r}
+reports_09_11_2020 %>% 
+  filter (Country.Region == "US") %>% 
+  ggplot(aes(x = Confirmed,  y = reorder(Province.State, Confirmed))) + 
+    geom_point() +
+    ggtitle("Confirmed cases for each State in US") +
+    ylab("Country/Region") +
+    xlab("Confirmed Cases")
+```
+
+```{r }
+reports_09_11_2020 %>% 
+  filter (Country.Region == "US") %>%
+  group_by(Province.State) %>% 
+  summarise(Deaths = sum(Deaths)) %>% 
+  arrange(desc(Deaths))
+```
+
+
+```{r}
+reports_09_11_2020 %>% 
+  filter (Country.Region == "US") %>% 
+  ggplot(aes(x = Deaths,  y = reorder(Province.State, Deaths))) + 
+    geom_point() +
+    ggtitle("Deaths cases for each State in US") +
+    ylab("Country/Region") +
+    xlab("Confirmed Cases")
+```
+
+```{r}
+reports_09_11_2020 %>%
+  group_by(Country.Region) %>% 
+  summarise(Confirmed = sum(Confirmed)) %>% 
+  arrange(desc(Confirmed))
+```
+
+
+```{r }
+reports_09_11_2020 %>% 
+  group_by(Country.Region) %>% 
+  summarise(Deaths = sum(Deaths)) %>% 
+  arrange(desc(Deaths))
+```
+
+
+
+```{r}
+reports_09_11_2020 %>% 
+  group_by(Country.Region) %>% 
+  summarise(Confirmed = sum(Confirmed)) %>% 
+  arrange(desc(Confirmed)) %>% 
+  slice(1:10) %>% 
+  ggplot(aes(x = Confirmed,  y = reorder(Country.Region, Confirmed))) + 
+    geom_bar(stat = 'identity') +
+    ggtitle("Coronavirus: Top ten most-affected countries Covid-19 ") +
+    ylab("Country/Region") +
+    xlab("Confirmed")
+```
+
+
+```{r }
+reports_09_11_2020 %>% 
+  group_by(Country.Region) %>% 
+  summarise(Deaths = sum(Deaths)) %>% 
+  arrange(desc(Deaths)) %>% 
+  slice(1:10) %>% 
+  ggplot(aes(x = Deaths,  y = reorder(Country.Region, Deaths))) + 
+    geom_bar(stat = 'identity') +
+    ggtitle("The 10 countries with the most reported COV19-related deaths") +
+    ylab("Country/Region") +
+    xlab("Deaths")
+```
+

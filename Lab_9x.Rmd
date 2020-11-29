@@ -1,0 +1,168 @@
+---
+title: "Lab_9x"
+author: "Liaqat Ali"
+date: "11/3/2020"
+output: html_document
+---
+
+
+```{r}
+## Generate a uniform random number
+x <- runif(1, 0, 10)  
+if(x > 3) {
+        y <- 10
+} else {
+        y <- 0
+}
+```
+
+```{r}
+for(i in 1:10) {
+  print(i)
+}
+```
+
+```{r}
+Human <- c("Kind", "Compassionate", "Empathetic", "Funny")
+for(qualities in 1:4) {
+        ## Print out each element of 'x'
+        print(Human[qualities])  
+}
+```
+
+```{r}
+for(i in seq_along(x)) {   
+        print(x[i])
+}
+```
+
+
+```{r}
+for(letter in x) {
+  print(letter)
+}
+```
+
+```{r}
+for(i in 1:4) print(x[i])
+```
+
+
+```{r}
+x <- matrix(1:6, 2, 3)
+for(i in seq_len(nrow(x))) {
+        for(j in seq_len(ncol(x))) {
+                print(x[i, j])
+        }   
+}
+```
+
+```{r}
+count <- 0
+while(count < 10) {
+        print(count)
+        count <- count + 1
+}
+```
+
+```{r}
+z <- 5
+set.seed(1)
+while(z >= 3 && z <= 10) {
+        coin <- rbinom(1, 1, 0.5)
+        
+        if(coin == 1) {  ## random walk
+                z <- z + 1
+        } else {
+                z <- z - 1
+        } 
+}
+print(z)
+```
+
+```{r}
+f <- function() {
+        ## This is an empty function
+}
+## Functions have their own class
+```
+
+
+```{r}
+class(f)  
+```
+
+
+```{r}
+## Execute this function
+f()       
+```
+
+```{r}
+f <- function() {
+        cat("Hello, world!\n")
+}
+f()
+```
+
+
+```{r}
+f <- function(num) {
+        for(i in seq_len(num)) {
+                cat("Hello, world!\n")
+        }
+}
+f(3)
+```
+
+```{r}
+f <- function(num) {
+        hello <- "Hello, world!\n"
+        for(i in seq_len(num)) {
+                cat(hello)
+        }
+        chars <- nchar(hello) * num
+        chars
+}
+meaningoflife <- f(3)
+```
+
+```{r}
+print(meaningoflife)
+```
+
+
+
+```{r}
+f <- function(num = 3) {
+        hello <- "Hello, world!\n"
+        for(i in seq_len(num)) {
+                cat(hello)
+        }
+        chars <- nchar(hello) * num
+        chars
+}
+f()    ## Use default value for 'num'
+```
+
+```{r}
+f(2)
+```
+
+
+```{r}
+f(num = 5)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
