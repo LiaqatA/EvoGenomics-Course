@@ -14,3 +14,7 @@ output:
 This is my website: https://liaqata.github.io/EvoGenomics-Course/
 
 This is my repository: https://github.com/LiaqatA/EvoGenomics-Course
+
+
+
+**** Hello,Professor! Hope all as well with you. Thank you so much for facilitating such a positive and flexible learning environment! Learning R-programming was quite challenging but definitely worth learning it.
