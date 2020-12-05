@@ -31,7 +31,7 @@ This is my web site!
   [Lab_7x](Lab_7x.html)           : RNA-Seq workflow: gene-level exploratoryanalysis and differential expression
 
   
-  [Lab_8]()                     Sequence Alignment, Phylogenetic Analysis and Tree Visualization
+  [Lab_8](Lab_8.html)                     Sequence Alignment, Phylogenetic Analysis and Tree Visualization
   
   [Lab_9](Lab_9.html)           : Programming in R- Regular Expressions
   
@@ -40,6 +40,8 @@ This is my web site!
   [ Lab_10](Lab_10.html)        : Pupulation genomics based on high throughput sequencing (HTS)
   
   [Lab_11](Lab_11.html)         : Microbiome Analysis using Dada2 and Phyloseq
+  
+  [EvoGenLab](EvoGenLab.html)
   
   
  
